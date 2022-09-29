@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TheMoviesDbAPI-Example</string>
+    <string name="movie_title_placeholder">Peaky Blinders</string>
 </resources>
