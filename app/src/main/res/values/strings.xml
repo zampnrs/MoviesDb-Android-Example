@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TheMoviesDbAPI-Example</string>
     <string name="movie_title_placeholder">Peaky Blinders</string>
+
+    <string name="movie_loading_error">Erro ao carregar o conteúdo</string>
+    <string name="network_error">Verifique sua conexão com a internet</string>
 </resources>
