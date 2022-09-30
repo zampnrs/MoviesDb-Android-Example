@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.zampnrs.themoviesdbapi_example.data.network.responses.MoviesResults
 import br.zampnrs.themoviesdbapi_example.databinding.ItemMoviesBinding
 import br.zampnrs.themoviesdbapi_example.utils.Constants
+import br.zampnrs.themoviesdbapi_example.utils.getRating
 
 import coil.load
 
@@ -18,6 +19,7 @@ class MoviesViewHolder(
             binding.apply {
                 moviePosterImageView.load("${Constants.BASE_IMG_URL}${it.poster_path}")
                 movieTitleTextView.text = it.title
+                ratingBar.rating = it.vote_average.getRating()
             }
         }
     }

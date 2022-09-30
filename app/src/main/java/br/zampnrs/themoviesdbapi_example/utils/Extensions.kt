@@ -10,3 +10,7 @@ fun Fragment.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
         duration
     ).show()
 }
+
+fun Double.getRating() : Float {
+    return (this / (Constants.RATING_MAX / Constants.RATING_STARS)).toFloat()
+}

@@ -13,16 +13,18 @@
 
         <ImageView
             android:id="@+id/moviePoster_imageView"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginHorizontal="10sp"
             tools:src="@android:drawable/ic_menu_gallery"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="2">
+            android:layout_weight="0"
+            android:layout_marginHorizontal="10sp">
 
             <TextView
                 android:id="@+id/movieTitle_textView"
@@ -32,6 +34,14 @@
                 android:gravity="center"
                 tools:text="@string/movie_title_placeholder"/>
 
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:scaleX="0.5"
+                android:scaleY="0.5" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -40,6 +50,6 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="15dp"/>
+        android:layout_marginTop="15dp"/>
 
 </LinearLayout>
