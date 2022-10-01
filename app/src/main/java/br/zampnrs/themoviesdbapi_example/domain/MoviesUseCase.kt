@@ -15,6 +15,6 @@ class MoviesUseCase @Inject constructor(
         key: String = BuildConfig.API_KEY,
         language: String? = null,
         region: String? = null,
-        page: Int? = Constants.FIRST_PAGE_INDEX
+        page: Int? = Constants.DEFAULT_PAGE_INDEX
     ) = api.loadMovies(key, language, region, page)
 }

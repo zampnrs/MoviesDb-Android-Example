@@ -23,14 +23,13 @@ class MoviesPagingSource @Inject constructor(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MoviesResults> {
-        val pageIndex = params.key ?: Constants.FIRST_PAGE_INDEX
-        val previousKey = if (pageIndex == Constants.FIRST_PAGE_INDEX) null else pageIndex
-
         return try {
-            val response = useCase.loadMovies()
+            val response = useCase.loadMovies(page = params.key)
 
-            val nextKey = if (response.results.isEmpty()) null
-                else pageIndex + (params.loadSize / response.results.size)
+            val previousKey = if (response.page == Constants.DEFAULT_PAGE_INDEX) null
+                else response.page - Constants.DEFAULT_PAGE_INDEX
+            val nextKey = if (response.page == response.total_pages) null
+                else response.page + Constants.DEFAULT_PAGE_INDEX
 
             LoadResult.Page(
                 data = response.results,
