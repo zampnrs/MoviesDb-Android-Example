@@ -7,4 +7,6 @@ object Constants {
 
     val RATING_MAX = 10
     val RATING_STARS = 5
+
+    val DEFAULT_CROSSFADE_TIME: Int = 500
 }
