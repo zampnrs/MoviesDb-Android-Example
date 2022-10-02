@@ -11,6 +11,7 @@ import br.zampnrs.themoviesdbapi_example.databinding.ItemMoviesBinding
 
 
 class MoviesAdapter : PagingDataAdapter<MoviesResults, MoviesViewHolder>(CONTENT_COMPARATOR) {
+    var onSelectMovie: ((movie: MoviesResults?) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         return MoviesViewHolder(ItemMoviesBinding.inflate(
@@ -20,6 +21,9 @@ class MoviesAdapter : PagingDataAdapter<MoviesResults, MoviesViewHolder>(CONTENT
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            onSelectMovie?.invoke(getItem(position))
+        }
     }
 
     companion object {

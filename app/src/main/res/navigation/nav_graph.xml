@@ -9,5 +9,31 @@
         android:id="@+id/moviesFragment"
         android:name="br.zampnrs.themoviesdbapi_example.ui.movies.view.MoviesFragment"
         android:label="fragment_movies"
-        tools:layout="@layout/fragment_movies" />
+        tools:layout="@layout/fragment_movies" >
+        <action
+            android:id="@+id/action_moviesFragment_to_moviesDetailFragment"
+            app:destination="@id/moviesDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/moviesDetailFragment"
+        android:name="br.zampnrs.themoviesdbapi_example.ui.movies_detail.view.MoviesDetailFragment"
+        android:label="fragment_movies_detail"
+        tools:layout="@layout/fragment_movies_detail" >
+        <argument
+            android:name="overview"
+            app:argType="string" />
+        <argument
+            android:name="genres_id"
+            app:argType="integer[]" />
+        <argument
+            android:name="movie_id"
+            app:argType="string" />
+        <argument
+            android:name="has_video"
+            app:argType="boolean" />
+        <argument
+            android:name="backdrop_path"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>
