@@ -31,6 +31,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="10dp" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/genres_layout"
             android:layout_width="match_parent"
@@ -50,6 +56,12 @@
                 android:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="10dp" />
 
         <TextView
             android:id="@+id/overview_textview"
