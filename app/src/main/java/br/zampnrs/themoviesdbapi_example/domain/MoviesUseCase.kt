@@ -12,7 +12,7 @@ class MoviesUseCase @Inject constructor(
 ) {
 
     suspend fun loadMovies(
-        key: String = BuildConfig.API_KEY,
+        key: String = BuildConfig.MOVIESDB_API_KEY,
         language: String? = null,
         region: String? = null,
         page: Int? = Constants.DEFAULT_PAGE_INDEX

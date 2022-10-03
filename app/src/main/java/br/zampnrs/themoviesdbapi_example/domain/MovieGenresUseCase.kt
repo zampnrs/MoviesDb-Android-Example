@@ -10,7 +10,7 @@ class MovieGenresUseCase @Inject constructor(
 ) {
 
     suspend fun loadMovieGenres(
-        key: String = BuildConfig.API_KEY,
+        key: String = BuildConfig.MOVIESDB_API_KEY,
         language: String? = null,
     ) = api.getMovieGenres(key, language)
 

@@ -23,7 +23,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
+        buildConfigField("String", "MOVIESDB_API_KEY", apikeyProperties['MOVIESDB_API_KEY'])
+        buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])
     }
 
     buildTypes {
@@ -52,6 +53,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "io.coil-kt:coil:2.2.1"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
+    implementation files("libs\\YouTubeAndroidPlayerApi.jar")
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
