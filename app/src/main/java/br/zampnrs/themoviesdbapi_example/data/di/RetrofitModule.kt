@@ -1,6 +1,7 @@
 package br.zampnrs.themoviesdbapi_example.data.di
 
 import br.zampnrs.themoviesdbapi_example.data.network.MovieGenresApi
+import br.zampnrs.themoviesdbapi_example.data.network.MovieVideosApi
 import br.zampnrs.themoviesdbapi_example.data.network.MoviesApi
 
 import dagger.Module
@@ -30,6 +31,12 @@ class RetrofitModule {
     @Singleton
     fun getMovieGenresApi(retrofit: Retrofit): MovieGenresApi {
         return retrofit.create(MovieGenresApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun getMovieVideosApi(retrofit: Retrofit): MovieVideosApi {
+        return retrofit.create(MovieVideosApi::class.java)
     }
 
     @Provides
