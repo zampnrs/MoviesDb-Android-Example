@@ -47,6 +47,12 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
         backButton.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        backdropImageView.setOnClickListener {
+            viewModel.movieVideo?.let {
+                playMovieVideo(it.key)
+            }
+        }
     }
 
     private fun FragmentMoviesDetailBinding.setFlexBox() {
@@ -61,7 +67,7 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
         overviewTextview.text = args.overview
 
         if (args.hasVideo) {
-            backdropImageView.setImageResource(android.R.drawable.ic_media_play)
+            progressBar.visibility = View.VISIBLE
             viewModel.loadMovieVideos(args.movieId)
         } else {
             loadBackdropImage()
@@ -78,10 +84,10 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
         }
     }
 
-    private fun FragmentMoviesDetailBinding.playMovieVideo() {
-        viewModel.movieVideo?.key?.let {
-            MoviesDetailFragmentDirections.actionMoviesDetailFragmentToMoviePlayActivity(it)
-        }
+    private fun playMovieVideo(key: String) {
+        findNavController().navigate(
+            MoviesDetailFragmentDirections.actionMoviesDetailFragmentToMoviePlayActivity(key)
+        )
     }
 
     private fun FragmentMoviesDetailBinding.subscribeLiveData() {
@@ -98,8 +104,10 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
                 }
                 is MoviesDetailViewModel.ViewState.GenresLoadingError ->
                     genresLayout.visibility = View.GONE
-                is MoviesDetailViewModel.ViewState.VideosLoadingSuccess ->
-                    playMovieVideo()
+                is MoviesDetailViewModel.ViewState.VideosLoadingSuccess -> {
+                    progressBar.visibility = View.GONE
+                    backdropImageView.setImageResource(android.R.drawable.ic_media_play)
+                }
                 is MoviesDetailViewModel.ViewState.VideosLoadingError ->
                     loadBackdropImage()
             }
