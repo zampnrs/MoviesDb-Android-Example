@@ -4,6 +4,6 @@
 
     <string name="movie_loading_error">Erro ao carregar o conteúdo</string>
     <string name="network_error">Verifique sua conexão com a internet</string>
-    <string name="video_loading_error_message">Erro ao iniciar o video</string>
     <string name="video_loading_empty_message">Sem videos a reproduzir</string>
+    <string name="video_player_error_message">Não foi possível reproduzir o vídeo</string>
 </resources>

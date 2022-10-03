@@ -100,10 +100,8 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
                     genresLayout.visibility = View.GONE
                 is MoviesDetailViewModel.ViewState.VideosLoadingSuccess ->
                     playMovieVideo()
-                is MoviesDetailViewModel.ViewState.VideosLoadingError -> {
-                    showToast(getString(R.string.video_loading_error_message))
+                is MoviesDetailViewModel.ViewState.VideosLoadingError ->
                     loadBackdropImage()
-                }
             }
         }
     }

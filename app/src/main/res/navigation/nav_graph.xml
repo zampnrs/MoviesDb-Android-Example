@@ -35,5 +35,17 @@
             android:name="backdrop_path"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_moviesDetailFragment_to_moviePlayActivity"
+            app:destination="@id/moviePlayActivity" />
     </fragment>
+    <activity
+        android:id="@+id/moviePlayActivity"
+        android:name="br.zampnrs.themoviesdbapi_example.ui.movie_play.MoviePlayActivity"
+        android:label="activity_movie_play"
+        tools:layout="@layout/activity_movie_play" >
+        <argument
+            android:name="video_key"
+            app:argType="string" />
+    </activity>
 </navigation>
