@@ -7,10 +7,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 
+import br.zampnrs.themoviesdbapi_example.R
 import br.zampnrs.themoviesdbapi_example.databinding.FragmentMoviesDetailBinding
 import br.zampnrs.themoviesdbapi_example.ui.movies_detail.viewmodel.MoviesDetailViewModel
 import br.zampnrs.themoviesdbapi_example.utils.BaseFragment
 import br.zampnrs.themoviesdbapi_example.utils.Constants
+import br.zampnrs.themoviesdbapi_example.utils.showToast
 
 import coil.load
 
@@ -61,17 +63,25 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
         if (args.hasVideo) {
             movieVideoView.visibility = View.VISIBLE
             backdropImageView.visibility = View.GONE
-            TODO("Play video")
+            viewModel.loadMovieVideos(args.movieId)
         } else {
-            movieVideoView.visibility = View.GONE
-            backdropImageView.apply {
-                visibility = View.VISIBLE
-                load("${Constants.BASE_IMG_URL}${args.backdropPath}") {
-                    crossfade(true)
-                    crossfade(Constants.DEFAULT_CROSSFADE_TIME)
-                }
+            loadBackdropImage()
+        }
+    }
+
+    private fun FragmentMoviesDetailBinding.loadBackdropImage() {
+        movieVideoView.visibility = View.GONE
+        backdropImageView.apply {
+            visibility = View.VISIBLE
+            load("${Constants.BASE_IMG_URL}${args.backdropPath}") {
+                crossfade(true)
+                crossfade(Constants.DEFAULT_CROSSFADE_TIME)
             }
         }
+    }
+
+    private fun FragmentMoviesDetailBinding.playMovieVideo() {
+        TODO("Play video")
     }
 
     private fun FragmentMoviesDetailBinding.subscribeLiveData() {
@@ -88,6 +98,12 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
                 }
                 is MoviesDetailViewModel.ViewState.GenresLoadingError ->
                     genresLayout.visibility = View.GONE
+                is MoviesDetailViewModel.ViewState.VideosLoadingSuccess ->
+                    playMovieVideo()
+                is MoviesDetailViewModel.ViewState.VideosLoadingError -> {
+                    showToast(getString(R.string.video_loading_error_message))
+                    loadBackdropImage()
+                }
             }
         }
     }
