@@ -28,7 +28,7 @@ class MoviesDetailViewModel @Inject constructor(
 
     val mutableLiveData = MutableLiveData<ViewState>()
     var movieGenresList: List<String> = emptyList()
-    var movieVideosList: List<MovieVideosResult> = emptyList()
+    var movieVideo: MovieVideosResult? = null
 
     fun loadMovieGenres(genresId: IntArray) = viewModelScope.launch {
         try {
@@ -49,8 +49,11 @@ class MoviesDetailViewModel @Inject constructor(
 
     fun loadMovieVideos(movieId: String) = viewModelScope.launch {
         try {
-            movieVideosUseCase.loadMovieVideos(movieId=movieId).also {
-                movieVideosList = it.results
+            movieVideosUseCase.loadMovieVideos(movieId=movieId).also { response ->
+                response.results.filter { movie -> movie.official }.also { filtered ->
+                    movieVideo = if (filtered.isNotEmpty()) filtered.first()
+                        else response.results.first()
+                }
             }
 
             mutableLiveData.postValue(ViewState.VideosLoadingSuccess)

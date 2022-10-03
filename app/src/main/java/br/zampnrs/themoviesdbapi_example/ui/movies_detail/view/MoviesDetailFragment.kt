@@ -61,8 +61,7 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
         overviewTextview.text = args.overview
 
         if (args.hasVideo) {
-            movieVideoView.visibility = View.VISIBLE
-            backdropImageView.visibility = View.GONE
+            backdropImageView.setImageResource(android.R.drawable.ic_media_play)
             viewModel.loadMovieVideos(args.movieId)
         } else {
             loadBackdropImage()
@@ -70,7 +69,6 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
     }
 
     private fun FragmentMoviesDetailBinding.loadBackdropImage() {
-        movieVideoView.visibility = View.GONE
         backdropImageView.apply {
             visibility = View.VISIBLE
             load("${Constants.BASE_IMG_URL}${args.backdropPath}") {
@@ -81,7 +79,9 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
     }
 
     private fun FragmentMoviesDetailBinding.playMovieVideo() {
-        TODO("Play video")
+        viewModel.movieVideo?.key?.let {
+            MoviesDetailFragmentDirections.actionMoviesDetailFragmentToMoviePlayActivity(it)
+        }
     }
 
     private fun FragmentMoviesDetailBinding.subscribeLiveData() {

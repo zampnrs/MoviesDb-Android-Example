@@ -19,15 +19,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <VideoView
-                android:id="@+id/movie_videoView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
             <ImageView
                 android:id="@+id/backdrop_imageView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:background="@android:color/black"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
