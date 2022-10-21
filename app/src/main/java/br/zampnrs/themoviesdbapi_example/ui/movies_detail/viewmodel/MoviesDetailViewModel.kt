@@ -1,6 +1,5 @@
 package br.zampnrs.themoviesdbapi_example.ui.movies_detail.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
@@ -9,7 +8,11 @@ import br.zampnrs.themoviesdbapi_example.domain.MovieGenresUseCase
 import br.zampnrs.themoviesdbapi_example.domain.MovieVideosUseCase
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
 import javax.inject.Inject
 
 
@@ -20,17 +23,25 @@ class MoviesDetailViewModel @Inject constructor(
 ): ViewModel() {
 
     sealed class ViewState {
-        object GenresLoadingSuccess : ViewState()
-        object GenresLoadingError : ViewState()
-        object VideosLoadingSuccess : ViewState()
-        object VideosLoadingError : ViewState()
+        object Initial : ViewState()
+        object Loading : ViewState()
+
+        object MovieGenresSuccess : ViewState()
+        object MovieVideosSuccess : ViewState()
+
+        object MovieGenresError : ViewState()
+        object MovieVideosError : ViewState()
     }
 
-    val mutableLiveData = MutableLiveData<ViewState>()
+    private val _viewStateFlow = MutableStateFlow<ViewState>(ViewState.Initial)
+    val viewStateFlow: StateFlow<ViewState> get() = _viewStateFlow
+
     var movieGenresList: List<String> = emptyList()
     var movieVideo: MovieVideosResult? = null
 
     fun loadMovieGenres(genresId: IntArray) = viewModelScope.launch {
+        _viewStateFlow.value = ViewState.Loading
+
         try {
             movieGenresUseCase.loadMovieGenres().also {
                 it.genres.filter { genre ->
@@ -41,13 +52,15 @@ class MoviesDetailViewModel @Inject constructor(
                     movieGenresList = list
                 }
             }
-            mutableLiveData.postValue(ViewState.GenresLoadingSuccess)
+            _viewStateFlow.value = ViewState.MovieGenresSuccess
         } catch (e: Exception) {
-            mutableLiveData.postValue(ViewState.GenresLoadingError)
+            _viewStateFlow.value = ViewState.MovieGenresError
         }
     }
 
     fun loadMovieVideos(movieId: String) = viewModelScope.launch {
+        _viewStateFlow.value = ViewState.Loading
+
         try {
             movieVideosUseCase.loadMovieVideos(movieId=movieId).also { response ->
                 response.results.filter { movie -> movie.official }.also { filtered ->
@@ -56,9 +69,9 @@ class MoviesDetailViewModel @Inject constructor(
                 }
             }
 
-            mutableLiveData.postValue(ViewState.VideosLoadingSuccess)
+            _viewStateFlow.value = ViewState.MovieVideosSuccess
         } catch (e: Exception) {
-            mutableLiveData.postValue(ViewState.VideosLoadingError)
+            _viewStateFlow.value = ViewState.MovieVideosError
         }
     }
 

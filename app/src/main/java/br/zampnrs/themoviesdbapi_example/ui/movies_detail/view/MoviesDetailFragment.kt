@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 
-import br.zampnrs.themoviesdbapi_example.R
 import br.zampnrs.themoviesdbapi_example.databinding.FragmentMoviesDetailBinding
 import br.zampnrs.themoviesdbapi_example.ui.movies_detail.viewmodel.MoviesDetailViewModel
 import br.zampnrs.themoviesdbapi_example.utils.BaseFragment
 import br.zampnrs.themoviesdbapi_example.utils.Constants
-import br.zampnrs.themoviesdbapi_example.utils.showToast
+import br.zampnrs.themoviesdbapi_example.utils.show
 
 import coil.load
 
@@ -91,25 +91,28 @@ class MoviesDetailFragment : BaseFragment<FragmentMoviesDetailBinding>(
     }
 
     private fun FragmentMoviesDetailBinding.subscribeLiveData() {
-        viewModel.mutableLiveData.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is MoviesDetailViewModel.ViewState.GenresLoadingSuccess -> {
-                    progressBar.visibility = View.GONE
-                    movieGenresAdapter.setList(viewModel.movieGenresList)
+        lifecycleScope.launchWhenStarted {
+            viewModel.viewStateFlow.collect { state ->
+                when (state) {
+                    is MoviesDetailViewModel.ViewState.Initial -> progressBar.show(false)
+                    is MoviesDetailViewModel.ViewState.Loading -> progressBar.show(true)
+                    is MoviesDetailViewModel.ViewState.MovieGenresSuccess -> {
+                        progressBar.show(false)
 
-                    genresRecyclerView.apply {
-                        visibility = View.VISIBLE
-                        adapter = movieGenresAdapter
+                        movieGenresAdapter.setList(viewModel.movieGenresList)
+                        genresRecyclerView.apply {
+                            visibility = View.VISIBLE
+                            adapter = movieGenresAdapter
+                        }
                     }
+                    is MoviesDetailViewModel.ViewState.MovieGenresError ->
+                        genresLayout.show(false)
+                    is MoviesDetailViewModel.ViewState.MovieVideosSuccess -> {
+                        progressBar.show(false)
+                        backdropImageView.setImageResource(android.R.drawable.ic_media_play)
+                    }
+                    is MoviesDetailViewModel.ViewState.MovieVideosError -> loadBackdropImage()
                 }
-                is MoviesDetailViewModel.ViewState.GenresLoadingError ->
-                    genresLayout.visibility = View.GONE
-                is MoviesDetailViewModel.ViewState.VideosLoadingSuccess -> {
-                    progressBar.visibility = View.GONE
-                    backdropImageView.setImageResource(android.R.drawable.ic_media_play)
-                }
-                is MoviesDetailViewModel.ViewState.VideosLoadingError ->
-                    loadBackdropImage()
             }
         }
     }
